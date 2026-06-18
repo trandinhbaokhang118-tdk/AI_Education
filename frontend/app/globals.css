@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 66 66 66;
+    --primary-blue: 135 206 235;
+    --primary-green: 76 175 80;
+    --primary-red: 244 67 54;
+    --primary-yellow: 255 193 7;
+    --success: 76 175 80;
+    --warning: 255 179 0;
+    --error: 244 67 54;
+    --info: 33 150 243;
+  }
+
+  * {
+    @apply border-neutral-lightGray;
+  }
+
+  body {
+    @apply bg-slate-50 text-neutral-darkGray font-nunito;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-baloo font-bold;
+  }
+}
+
+@layer components {
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-primary-green text-white px-7 py-4 rounded-button font-extrabold;
+    @apply min-h-button min-w-button text-button;
+    @apply shadow-lg shadow-primary-green/30;
+    @apply transition-all duration-150 ease-out;
+    @apply hover:translate-y-[-2px] hover:shadow-xl hover:shadow-primary-green/40;
+    @apply active:translate-y-0 active:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-white text-primary-green px-7 py-4 rounded-button font-extrabold;
+    @apply min-h-button min-w-button text-button;
+    @apply border border-primary-green/50;
+    @apply transition-all duration-150 ease-out;
+    @apply hover:bg-primary-green/10 hover:border-primary-green;
+  }
+
+  .btn-icon {
+    width: 3.75rem;
+    height: 3.75rem;
+    min-width: 3.75rem;
+    min-height: 3.75rem;
+    @apply rounded-full flex items-center justify-center;
+    @apply bg-white shadow-md transition-all duration-150;
+    @apply hover:translate-y-[-2px] hover:shadow-lg;
+    @apply active:translate-y-0 active:shadow-sm;
+  }
+
+  .card {
+    @apply bg-white rounded-card border border-slate-200/80 p-lg shadow-sm;
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .card-hover {
+    @apply hover:translate-y-[-4px] hover:shadow-xl;
+  }
+
+  /* Game card styles */
+  .game-card {
+    @apply card card-hover cursor-pointer;
+  }
+
+  .progress-bar {
+    @apply h-3 rounded-full bg-neutral-lightGray overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-primary-green to-secondary-teal;
+    @apply transition-all duration-500 ease-out;
+  }
+
+  /* Star rating */
+  .star {
+    @apply w-12 h-12 transition-all duration-300;
+  }
+
+  .star-filled {
+    @apply text-primary-yellow;
+  }
+
+  .star-empty {
+    @apply text-neutral-mediumGray;
+  }
+
+  .surface-card {
+    @apply rounded-card border border-slate-200 bg-white shadow-sm;
+    box-shadow: 0 18px 55px rgba(15, 23, 42, 0.08);
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .page-band {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+}
+
+@layer utilities {
+
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-drive {
+    animation: drive 9s linear infinite;
+  }
+
+  @keyframes bounce-gentle {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  @keyframes drive {
+    0% {
+      transform: translateX(-18%);
+    }
+
+    100% {
+      transform: translateX(118%);
+    }
+  }
+
+  .chat-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.35);
+    border-radius: 999px;
+  }
+
+  .safe-grid {
+    background-image:
+      linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .min-w-10 {
+    min-width: 2.5rem;
+  }
+
+  .text-child-friendly {
+    @apply text-body leading-relaxed max-w-[65ch];
+  }
+
+  @media (max-width: 768px) {
+
+    button,
+    a,
+    .interactive {
+      @apply min-h-button min-w-button;
+    }
+  }
+}

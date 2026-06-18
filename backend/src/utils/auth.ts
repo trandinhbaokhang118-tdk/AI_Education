@@ -3,7 +3,21 @@ import type { Secret, SignOptions } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 
-const JWT_SECRET: Secret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const DEV_FALLBACK_SECRET = 'dev-only-insecure-secret-change-me';
+const rawSecret = process.env.JWT_SECRET;
+
+// Fail fast in production if the secret is missing or left at the insecure default.
+if (process.env.NODE_ENV === 'production') {
+    if (!rawSecret || rawSecret === DEV_FALLBACK_SECRET || rawSecret === 'your-secret-key-change-in-production' || rawSecret === 'your-secret-key-here-change-in-production') {
+        throw new Error(
+            'JWT_SECRET is missing or set to an insecure default. Set a strong, unique JWT_SECRET environment variable before deploying to production.'
+        );
+    }
+} else if (!rawSecret) {
+    console.warn('[auth] JWT_SECRET not set — using an insecure development fallback. Do NOT use this in production.');
+}
+
+const JWT_SECRET: Secret = rawSecret || DEV_FALLBACK_SECRET;
 const JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN || '7d') as SignOptions['expiresIn'];
 
 export interface JWTPayload {
