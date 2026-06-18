@@ -1,0 +1,21 @@
+{
+    "hasCompletedOnboarding": true,
+    "env": {
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+        "CLAUDE_CODE_SUBAGENT_MODEL": "cc/claude-opus-4-6",
+        "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "0",
+        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+        "alwaysThinkingEnabled": "true",
+        "ANTHROPIC_BASE_URL": "http://127.0.0.1:20128",
+        "ANTHROPIC_AUTH_TOKEN": "sk-ca163119e5af194d-3vxyc6-13a03d3f",
+        "ANTHROPIC_DEFAULT_OPUS_MODEL": "cc/claude-opus-4-6",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL": "cc/claude-sonnet-4-6",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL": "cc/claude-haiku-4-5-20251001"
+    },
+    "permissions": {
+        "allow": [
+            "mcp__pencil"
+        ],
+        "deny": []
+    }
+}

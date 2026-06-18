@@ -1,0 +1,14 @@
+{
+    "name": "@traffic-kids/types",
+    "version": "1.0.0",
+    "description": "Shared TypeScript types for Traffic Kids",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {},
+    "keywords": [
+        "types",
+        "typescript"
+    ],
+    "author": "Traffic Kids Team",
+    "license": "MIT"
+}

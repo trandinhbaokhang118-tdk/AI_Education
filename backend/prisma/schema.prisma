@@ -1,0 +1,152 @@
+// Prisma schema for Traffic Kids (Bé Vui Giao Thông)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Model
+model User {
+  id            String       @id @default(uuid())
+  name          String
+  email         String       @unique
+  password_hash String
+  role          String       @default("PLAYER") // PLAYER | GUARDIAN | ADMIN
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+
+  game_scores   GameScore[]
+  user_badges   UserBadge[]
+  user_progress UserProgress[]
+
+  @@map("users")
+}
+
+// Mini Game Model
+model MiniGame {
+  id            String        @id @default(uuid())
+  title         String
+  description   String
+  topic         String        @unique // e.g., "traffic-light", "helmet-safety"
+  difficulty    Int           @default(1)
+  thumbnail_url String
+  is_active     Boolean       @default(true)
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+
+  game_scores   GameScore[]
+  lessons       Lesson[]
+  traffic_signs TrafficSign[]
+  user_progress UserProgress[]
+
+  @@map("mini_games")
+}
+
+// Game Score Model
+model GameScore {
+  id           String    @id @default(uuid())
+  user_id      String
+  mini_game_id String
+  score        Int // 0-100
+  stars        Int // 1-3
+  started_at   DateTime
+  completed_at DateTime?
+  created_at   DateTime  @default(now())
+
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  mini_game MiniGame @relation(fields: [mini_game_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([mini_game_id])
+  @@index([completed_at])
+  @@map("game_scores")
+}
+
+// Lesson Model
+model Lesson {
+  id                     String   @id @default(uuid())
+  mini_game_id           String
+  title                  String
+  content                String
+  illustration_url       String
+  child_friendly_message String
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+
+  mini_game MiniGame @relation(fields: [mini_game_id], references: [id], onDelete: Cascade)
+
+  @@map("lessons")
+}
+
+// Badge Model
+model Badge {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  icon_url    String
+  criteria    String // JSON string, e.g., {"condition": "all_games_3_stars", "threshold": 5}
+  created_at  DateTime @default(now())
+
+  user_badges UserBadge[]
+
+  @@map("badges")
+}
+
+// User Badge (many-to-many relationship)
+model UserBadge {
+  id        String   @id @default(uuid())
+  user_id   String
+  badge_id  String
+  earned_at DateTime @default(now())
+
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badge_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, badge_id])
+  @@index([user_id])
+  @@map("user_badges")
+}
+
+// User Progress Model
+model UserProgress {
+  id             String    @id @default(uuid())
+  user_id        String
+  mini_game_id   String
+  best_score     Int       @default(0)
+  best_stars     Int       @default(0)
+  completed      Boolean   @default(false)
+  attempt_count  Int       @default(0)
+  last_played_at DateTime?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  mini_game MiniGame @relation(fields: [mini_game_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, mini_game_id])
+  @@index([user_id])
+  @@index([mini_game_id])
+  @@map("user_progress")
+}
+
+// Traffic Sign Model
+model TrafficSign {
+  id                   String   @id @default(uuid())
+  name                 String
+  meaning              String
+  image_url            String
+  category             String // e.g., "pedestrian", "prohibitory", "warning"
+  explanation_for_kids String
+  related_game_id      String?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  related_game MiniGame? @relation(fields: [related_game_id], references: [id], onDelete: SetNull)
+
+  @@index([category])
+  @@map("traffic_signs")
+}
